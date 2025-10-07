@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=\, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f0f4ff, #d5e3ff);
+  }
+
+  main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  section {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease;
+  }
+
+  section:hover {
+    transform: translateY(-4px);
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #2c3e50;
+  }
+
+  p {
+    color: #555;
+    line-height: 1.6;
+  }
+
+	footer {
+  text-align: center;
+  margin-top: 2rem;
+  color: #777;
+  font-size: 0.9rem;
+  font-style: italic;
+  padding-top: 1rem;
+  border-radius: 0 0 12px 12px;
+}
+
+  .welcome-content {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .welcome-text {
+    flex: 1;
+  }
+
+  .welcome-img {
+    flex: 1;
+    max-width: 300px;
+  }
+
+  .welcome-img img {
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  .card {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  label {
+    font-weight: 500;
+    color: #34495e;
+  }
+
+  input,
+  select {
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border 0.3s ease;
+  }
+
+  input:focus,
+  select:focus {
+    outline: none;
+    border-color: #3498db;
+  }
+
+  #result {
+    margin-top: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #27ae60;
+    font-size: 1.2rem;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: #777;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+    .welcome-content {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>
+
+<main>
+  <!-- SECCIÓN DE BIENVENIDA -->
+  <section>
+    <div class="welcome-content">
+      <div class="welcome-text">
+        <h1>Savings and Investments</h1>
+        <p>El ahorro y la inversión son claves para lograr estabilidad financiera.</p>
+        <p>
+          El <strong>ahorro</strong> es separar parte de tus ingresos para el futuro, mientras que la <strong>inversión</strong> busca hacer crecer ese dinero a través del tiempo mediante herramientas como cuentas de inversión, fondos, o activos.
+        </p>
+      </div>
+      <div class="welcome-img">
+        <img src="https://i0.wp.com/rappicard.mx/wp-content/uploads/2025/03/ahorro-vs-inversion.webp?fit=804%2C504&ssl=1" alt="Ahorro e Inversión" />
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN DE CALCULADORA -->
+  <section style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
+    <h2>Calculadora de ahorro o inversión</h2>
+    <div class="card">
+      <h3>Simula tu ahorro o inversión</h3>
+
+      <form id="calc-form">
+        <label>
+          Monto inicial:
+          <input type="number" id="monto" placeholder="1000" />
+        </label>
+
+        <label>
+          Tasa de interés anual (%):
+          <input type="number" id="tasa" placeholder="5" />
+        </label>
+
+        <label>
+          Años:
+          <input type="number" id="tiempo" placeholder="3" />
+        </label>
+
+        <label>
+          Tipo de cálculo:
+          <select id="modo">
+            <option value="inversion">Inversión (con intereses)</option>
+            <option value="ahorro">Solo ahorro (sin intereses)</option>
+          </select>
+        </label>
+      </form>
+
+      <p id="result">Monto final estimado: $0.00</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    Hecho por Austin Jaimes Cruz
+  </footer>
+</main>
+
+<script type="module" client:load>
+  const form = document.querySelector('#calc-form');
+  const result = document.querySelector('#result');
+
+  form?.addEventListener('input', () => {
+    const monto = parseFloat(document.querySelector('#monto')?.value || '0');
+    const tasa = parseFloat(document.querySelector('#tasa')?.value || '0');
+    const tiempo = parseFloat(document.querySelector('#tiempo')?.value || '0');
+    const modo = document.querySelector('#modo')?.value;
+
+    let resultado = 0;
+
+    if (modo === 'inversion') {
+      resultado = monto * Math.pow(1 + tasa / 100, tiempo);
+    } else {
+      resultado = monto * tiempo; // Ahorro sin interés
+    }
+
+    result.textContent = `Monto final estimado: $${resultado.toFixed(2)}`;
+  });
+</script>
+
+</body>
+</html>
