@@ -1,0 +1,80 @@
+---
+let resultado = null;
+---
+
+<section class="max-w-xl mx-auto p-6 bg-white rounded-2xl shadow-lg mt-10 text-center">
+  <h1 class="text-3xl font-bold text-gray-800 mb-4">💰 Calculadora de Pérdida del Valor del Dinero</h1>
+
+  <p class="text-gray-600 mb-6">
+    La <strong>inflación</strong> es el aumento general de los precios con el tiempo, lo que hace que el dinero pierda poder adquisitivo.
+    En otras palabras, con la misma cantidad de dinero puedes comprar menos cosas conforme pasan los años.
+  </p>
+
+  <form id="calcForm" class="space-y-4">
+    <div>
+      <label for="monto" class="block text-gray-700 font-semibold">💵 Cantidad inicial (MXN):</label>
+      <input type="number" id="monto" required placeholder="Ej. 1000"
+        class="w-full mt-1 p-2 border rounded-lg text-center" />
+    </div>
+
+    <div>
+      <label for="anioInicio" class="block text-gray-700 font-semibold">📅 Año inicial:</label>
+      <input type="number" id="anioInicio" required placeholder="Ej. 2010"
+        class="w-full mt-1 p-2 border rounded-lg text-center" />
+    </div>
+
+    <div>
+      <label for="anioFinal" class="block text-gray-700 font-semibold">📅 Año final:</label>
+      <input type="number" id="anioFinal" required placeholder="Ej. 2025"
+        class="w-full mt-1 p-2 border rounded-lg text-center" />
+    </div>
+
+    <div>
+      <label for="inflacion" class="block text-gray-700 font-semibold">📈 Inflación promedio anual (%):</label>
+      <input type="number" id="inflacion" step="0.1" required placeholder="Ej. 5"
+        class="w-full mt-1 p-2 border rounded-lg text-center" />
+    </div>
+
+    <button type="submit"
+      class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition">
+      Calcular
+    </button>
+  </form>
+
+  <div id="resultado" class="mt-6 text-xl font-semibold text-gray-800"></div>
+
+  <p class="text-gray-500 text-sm mt-4">
+    *Este cálculo es una estimación basada en una tasa promedio de inflación.
+  </p>
+</section>
+
+<script>
+  const form = document.getElementById('calcForm');
+  const resultadoDiv = document.getElementById('resultado');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const monto = parseFloat(document.getElementById('monto').value);
+    const anioInicio = parseInt(document.getElementById('anioInicio').value);
+    const anioFinal = parseInt(document.getElementById('anioFinal').value);
+    const inflacion = parseFloat(document.getElementById('inflacion').value) / 100;
+
+    const años = anioFinal - anioInicio;
+
+    if (años < 0) {
+      resultadoDiv.textContent = '⚠️ El año final debe ser mayor al inicial.';
+      return;
+    }
+
+    // Fórmula: valorActual = valorInicial * (1 - inflación)^años
+    const valorActual = monto * Math.pow(1 - inflacion, años);
+    const perdida = monto - valorActual;
+
+    resultadoDiv.innerHTML = `
+      En ${años} años, tu dinero perdió aproximadamente 
+      <span class="text-red-600">$${perdida.toFixed(2)}</span> de su valor.<br>
+      Hoy equivale a <span class="text-green-600 font-bold">$${valorActual.toFixed(2)}</span>.
+    `;
+  });
+</script>

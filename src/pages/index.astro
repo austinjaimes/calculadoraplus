@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=\, initial-scale=1.0">
-	<title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inflación - Calculadora del valor del dinero</title>
 </head>
 <body>
 <style>
   body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f0f4ff, #d5e3ff);
+    background: linear-gradient(135deg, #f8faff, #dbe5ff);
   }
 
   main {
@@ -59,15 +59,15 @@
     line-height: 1.6;
   }
 
-	footer {
-  text-align: center;
-  margin-top: 2rem;
-  color: #777;
-  font-size: 0.9rem;
-  font-style: italic;
-  padding-top: 1rem;
-  border-radius: 0 0 12px 12px;
-}
+  footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: #777;
+    font-size: 0.9rem;
+    font-style: italic;
+    padding-top: 1rem;
+    border-radius: 0 0 12px 12px;
+  }
 
   .welcome-content {
     display: flex;
@@ -82,7 +82,7 @@
 
   .welcome-img {
     flex: 1;
-    max-width: 300px;
+    max-width: 350px;
   }
 
   .welcome-img img {
@@ -110,8 +110,7 @@
     color: #34495e;
   }
 
-  input,
-  select {
+  input {
     padding: 0.6rem;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -119,8 +118,7 @@
     transition: border 0.3s ease;
   }
 
-  input:focus,
-  select:focus {
+  input:focus {
     outline: none;
     border-color: #3498db;
   }
@@ -131,13 +129,6 @@
     text-align: center;
     color: #27ae60;
     font-size: 1.2rem;
-  }
-
-  footer {
-    text-align: center;
-    margin-top: 2rem;
-    color: #777;
-    font-size: 0.9rem;
   }
 
   @media (max-width: 768px) {
@@ -153,50 +144,47 @@
   <section>
     <div class="welcome-content">
       <div class="welcome-text">
-        <h1>Savings and Investments</h1>
-        <p>El ahorro y la inversión son claves para lograr estabilidad financiera.</p>
+        <h1>Inflación y valor del dinero</h1>
+        <p>La <strong>inflación</strong> es el aumento general de los precios con el tiempo. Esto hace que el dinero pierda valor, ya que con la misma cantidad puedes comprar menos cosas.</p>
         <p>
-          El <strong>ahorro</strong> es separar parte de tus ingresos para el futuro, mientras que la <strong>inversión</strong> busca hacer crecer ese dinero a través del tiempo mediante herramientas como cuentas de inversión, fondos, o activos.
+          Por ejemplo, si en 2010 tenías $1000, ese dinero no vale lo mismo en 2025. La inflación disminuye su poder adquisitivo.
         </p>
       </div>
       <div class="welcome-img">
-        <img src="https://i0.wp.com/rappicard.mx/wp-content/uploads/2025/03/ahorro-vs-inversion.webp?fit=804%2C504&ssl=1" alt="Ahorro e Inversión" />
+        <img src="https://cdn-icons-png.flaticon.com/512/1170/1170576.png" alt="Inflación" />
       </div>
     </div>
   </section>
 
   <!-- SECCIÓN DE CALCULADORA -->
   <section style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
-    <h2>Calculadora de ahorro o inversión</h2>
+    <h2>Calculadora de pérdida del valor del dinero</h2>
     <div class="card">
-      <h3>Simula tu ahorro o inversión</h3>
+      <h3>Simula cuánto ha perdido tu dinero con la inflación</h3>
 
       <form id="calc-form">
         <label>
-          Monto inicial:
-          <input type="number" id="monto" placeholder="1000" />
+          💵 Cantidad inicial (MXN):
+          <input type="number" id="monto" placeholder="1000" required />
         </label>
 
         <label>
-          Tasa de interés anual (%):
-          <input type="number" id="tasa" placeholder="5" />
+          📅 Año inicial:
+          <input type="number" id="anioInicio" placeholder="2010" required />
         </label>
 
         <label>
-          Años:
-          <input type="number" id="tiempo" placeholder="3" />
+          📅 Año final:
+          <input type="number" id="anioFinal" placeholder="2025" required />
         </label>
 
         <label>
-          Tipo de cálculo:
-          <select id="modo">
-            <option value="inversion">Inversión (con intereses)</option>
-            <option value="ahorro">Solo ahorro (sin intereses)</option>
-          </select>
+          📈 Inflación promedio anual (%):
+          <input type="number" id="inflacion" placeholder="5" step="0.1" required />
         </label>
       </form>
 
-      <p id="result">Monto final estimado: $0.00</p>
+      <p id="result">El valor actual aparecerá aquí.</p>
     </div>
   </section>
 
@@ -206,25 +194,36 @@
   </footer>
 </main>
 
-<script type="module" client:load>
+<script type="module">
   const form = document.querySelector('#calc-form');
   const result = document.querySelector('#result');
 
   form?.addEventListener('input', () => {
     const monto = parseFloat(document.querySelector('#monto')?.value || '0');
-    const tasa = parseFloat(document.querySelector('#tasa')?.value || '0');
-    const tiempo = parseFloat(document.querySelector('#tiempo')?.value || '0');
-    const modo = document.querySelector('#modo')?.value;
+    const anioInicio = parseInt(document.querySelector('#anioInicio')?.value || '0');
+    const anioFinal = parseInt(document.querySelector('#anioFinal')?.value || '0');
+    const inflacion = parseFloat(document.querySelector('#inflacion')?.value || '0') / 100;
 
-    let resultado = 0;
-
-    if (modo === 'inversion') {
-      resultado = monto * Math.pow(1 + tasa / 100, tiempo);
-    } else {
-      resultado = monto * tiempo; // Ahorro sin interés
+    if (!monto || !anioInicio || !anioFinal || !inflacion) {
+      result.textContent = 'Completa todos los campos.';
+      return;
     }
 
-    result.textContent = `Monto final estimado: $${resultado.toFixed(2)}`;
+    const años = anioFinal - anioInicio;
+    if (años < 0) {
+      result.textContent = '⚠️ El año final debe ser mayor al inicial.';
+      return;
+    }
+
+    // Fórmula: valorActual = monto * (1 - inflacion)^años
+    const valorActual = monto * Math.pow(1 - inflacion, años);
+    const perdida = monto - valorActual;
+
+    result.innerHTML = `
+      En ${años} años, tu dinero perdió aproximadamente 
+      <span style="color:#e74c3c;">$${perdida.toFixed(2)}</span> de su valor.<br>
+      Hoy equivale a <span style="color:#27ae60;">$${valorActual.toFixed(2)}</span>.
+    `;
   });
 </script>
 
